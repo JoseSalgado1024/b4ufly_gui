@@ -21,7 +21,7 @@ agm-map {
 }
 
 .layer-00 {
-    z-index: 1;
+    z-index: 100;
 }
 
 .info-windows-1 {
@@ -57,5 +57,8 @@ agm-map {
 }
 
 footer {
-  margin-top: 50%;
+  z-index: 200;
+  position: absolute;
+  top: 30px;
+  left: 30px;
 }
