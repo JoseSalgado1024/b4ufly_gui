@@ -1,3 +1,60 @@
+<agm-map class="layer-background"
+         [latitude]="initial_lat"
+         [longitude]="initial_lng"
+         [zoom]="initial_zoom"
+         [styles]='[{"elementType":"geometry","stylers":[{"color":"#ebe3cd"}]},{"elementType":"labels","stylers":[{"visibility":"off"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#523735"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#f5f1e6"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#c9b2a6"}]},{"featureType":"administrative.land_parcel","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"geometry.stroke","stylers":[{"color":"#dcd2be"}]},{"featureType":"administrative.land_parcel","elementType":"labels.text.fill","stylers":[{"color":"#ae9e90"}]},{"featureType":"administrative.neighborhood","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#93817c"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#a5b076"}]},{"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"color":"#447530"}]},{"featureType":"road","elementType":"geometry","stylers":[{"color":"#f5f1e6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#fdfcf8"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#f8c967"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#e9bc62"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry","stylers":[{"color":"#e98d58"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry.stroke","stylers":[{"color":"#db8555"}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#806b63"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"transit.line","elementType":"labels.text.fill","stylers":[{"color":"#8f7d77"}]},{"featureType":"transit.line","elementType":"labels.text.stroke","stylers":[{"color":"#ebe3cd"}]},{"featureType":"transit.station","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#b9d3c2"},{"weight":2}]},{"featureType":"water","elementType":"geometry.stroke","stylers":[{"color":"#507e60"},{"lightness":-5},{"visibility":"on"},{"weight":5.5}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#92998d"}]}]'>
+  <agm-marker [latitude]="initial_lat" [longitude]="initial_lng" name="user" [iconUrl]="'assets/user-location.png'">
+    <agm-info-window>
+      <div class="info-windows-1">
+        <div class="user-data">
+            <img src="https://www.gravatar.com/avatar/5a81f970483497f3808592a779e9b35b?s=64&d=identicon&r=PG" alt="Jose A. Salgado">
+        </div>
+        <div class="device-data">
+            <ul>
+                <li>UAV: <strong>Eachine Wizard x220s</strong></li>
+                <li>Tx Controller: <strong>FlySky FS-i6x</strong></li>
+                <li>Tx scope: <strong>800mts.</strong></li>
+              </ul>
+        </div>
+      </div>
+    </agm-info-window>
+  </agm-marker>
+  <!-- NEAREST AIRPORTS -->
+  <agm-marker *ngFor="let airport of airports_nearest"
+              [latitude]="airport.lat"
+              [longitude]="airport.lng"
+              name="airport.name"
+              [iconUrl]="'assets/collision-location.png'">
+    <agm-info-window>
+      <div>
+        <strong>"{{ airport.name }}"</strong>
+      </div>
+    </agm-info-window>
+  </agm-marker>
+  <agm-circle *ngFor="let airport of airports_nearest"
+              [latitude]="airport.lat"
+              [longitude]="airport.lng"
+              [fillColor]="'red'"
+              [fillOpacity]="'0.1'"
+              [radius]="5000">
+  </agm-circle>
+  <agm-marker *ngFor="let airport of airports"
+              [latitude]="airport.lat"
+              [longitude]="airport.lng"
+              name="airport.name"
+              [iconUrl]="'assets/non-collision-location.png'">
+    <agm-info-window>
+      <div>
+        <strong>"{{ airport.name }}"</strong>
+      </div>
+    </agm-info-window>
+  </agm-marker>
 
 
+</agm-map>
+
+<footer>
+  <button (click)="AirportsNearest()">Nearest Airports</button>
+  <button (click)="Airports()">Airports</button>
+</footer>
 <router-outlet></router-outlet>
