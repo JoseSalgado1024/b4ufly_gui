@@ -34,16 +34,6 @@
   <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'">data</div>
 </div>
 
-
-<!-- DATA STATUS
-<div style="position: absolute;">
-  <ng-container *ngIf="airports_loaded==true then loaded else not_loaded"></ng-container>
-  <ng-template #loaded><p>Airports loaded </p></ng-template>
-  <ng-template #not_loaded><p>Airports not loaded </p></ng-template>
-</div>
- END DATA STATUS -->
-
-
 <!-- LOADING  -->
 <div class="loading-layer" *ngIf="is_loading">
     <img src="assets/default-theme/loading-circle.gif" alt="CARGANDO" >
