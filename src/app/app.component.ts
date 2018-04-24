@@ -11,6 +11,8 @@ export class AppComponent {
   // APP setting
   public title = 'app';
   public is_loading = true;
+  public can_fly = 0;
+  public  informed = false;
 
   // Data Containers
   public near_objects_warning = [];
@@ -24,7 +26,7 @@ export class AppComponent {
   public near_airports_warning_distance = 5000;
   public near_airports_denied_distance = 1000;
   public viewport_range = 200000;
-  public lisftoff_time = '0';
+  public liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
 
   constructor (private _airports: DataAcquireService) {
     if (navigator.geolocation) {
@@ -38,13 +40,16 @@ export class AppComponent {
   }
 
   private getNearetObjectsWarning() {
+    this.getNearetObjectsDenied();
     this._airports.getNearAirports(this.lat, this.lng, this.near_airports_warning_distance).subscribe(
       data => {
+        this.near_objects_warning.length = 0;
         for (let wa of data.results ) {
           if (this.near_objects_denied.indexOf(wa.local_identifier) < 0) {
             this.near_objects_warning.push(wa.local_identifier);
           }
         }
+        console.log( 'WOC: ' + this.near_objects_warning.length + '.' );
       },
       err => console.log(err),
       () => console.log('Nearest Objects (Warning) successful loaded!.')
@@ -52,21 +57,27 @@ export class AppComponent {
   }
 
   private getNearetObjectsDenied() {
-    this._airports.getNearAirports(this.lat, this.lng, this.near_airports_warning_distance).subscribe(
+    this._airports.getNearAirports(this.lat, this.lng, this.near_airports_denied_distance).subscribe(
       data => {
-        for (let da of data.results ) {
-            this.near_objects_warning.push(da.local_identifier);
+        if (this.near_objects_denied.length > 0) {
+          this.near_objects_denied.length = 0;
         }
+        for (let da of data.results ) {
+            this.near_objects_denied.push(da.local_identifier);
+        }
+        console.log( 'DOC: ' + this.near_objects_denied.length + '.' );
       },
       err => console.log(err),
       () => console.log('Nearest Objects (Denied) successful loaded!.')
     );
   }
-
+  i_was_informed() {
+    this.informed = !this.informed;
+  }
   getAirportsData() {
-    this.near_objects_warning = [];
-    this.near_objects_denied = [];
-    this.getNearetObjectsDenied();
+    this.is_loading = true;
+    this.informed = false;
+    this.airports.length = 0;
     this.getNearetObjectsWarning();
     this._airports.getNearAirports(this.lat, this.lng, this.viewport_range).subscribe(
     data => {
@@ -80,10 +91,21 @@ export class AppComponent {
           denied: this.near_objects_denied.indexOf(a.local_identifier) < 0
         });
       }
+      this.is_loading = false;
+      if (this.near_objects_warning.length === 0 &&  this.near_objects_denied.length === 0) {
+        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
+        this.can_fly = 0;
+        console.log('Can fly!');
+      }
       if ( this.near_objects_warning.length > 0 ) {
-        this.lisftoff_time = '1';
-      } else if ( this.near_objects_denied.length > 0 ) {
-        this.lisftoff_time = '2';
+        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-warning-green.png';
+        this.can_fly = 1;
+        console.log('Can fly, but have some restrictions');
+      }
+      if ( this.near_objects_denied.length > 0 ) {
+        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-denied-green.png';
+        this.can_fly = 2;
+        console.log('Sorry, but you can\'t fly!');
       }
 
     },
@@ -98,8 +120,6 @@ export class AppComponent {
   pickPosition(event) {
     this.lat = event.coords.lat;
     this.lng = event.coords.lng;
-    this.near_objects_denied = [];
-    this.near_objects_warning = [];
     this.getAirportsData();
     console.log('Moved to lat: ' + this.lat + ', lng: ' + this.lng);
   }
