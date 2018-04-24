@@ -31,14 +31,18 @@
 
 <div class="top-menu-bar">
   <h1>B4uFly | Beta </h1>
-  <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'">data</div>
-  <div [ngClass]="(can_fly<2)?'centered-container btn data-ready':'centered-container btn data-working'">
-    <ng-container [ngSwitch]="can_fly">
-      <p *ngSwitchCase=0>VUELO LIBRE</p>
-      <p *ngSwitchCase=1>VUELO CON RESTRICCIONES</p>
-      <p *ngSwitchCase=2>ZONA RESTRINGIDA</p>
-    </ng-container>
-  </div>
+  <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'" title="Data status">data</div>
+  <ng-container [ngSwitch]="can_fly">
+    <div *ngSwitchCase=0 class="centered-container flight-status-0">
+        <p >VUELO LIBRE</p>
+    </div>
+    <div *ngSwitchCase=1 class="centered-container flight-status-1">
+        <p >VUELO CON RESTRICCIONES</p>
+    </div>
+    <div *ngSwitchCase=2 class="centered-container flight-status-2">
+        <p >ZONA RESTRINGIDA</p>
+    </div>
+  </ng-container>
 </div>
 
 <!-- LOADING  -->
