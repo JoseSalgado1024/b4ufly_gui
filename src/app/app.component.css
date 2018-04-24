@@ -154,3 +154,43 @@ footer {
   padding: 10px 0 !important;
   font-size: 2em !important;
 }
+
+.top-menu-bar {
+  position: fixed;
+  background: #313131;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.top-menu-bar h1 {
+  color: #FFF;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  padding: .3em .2em;
+}
+
+.btn {
+  font-size: .7em;
+  padding: 5px 10px;
+  background: #FFF;
+  border-radius: 5px;
+}
+.data-ready {
+  color: #1f1f1f;
+  background: #5f9;
+  font-family: "Roboto", sans-serif;
+}
+.data-working {
+  color: #FFF;
+  background: #e4114e;
+  font-family: "Roboto", sans-serif
+}
+
+.floating-right {
+  float: right;
+  margin: -40px 10px 0 0;
+}

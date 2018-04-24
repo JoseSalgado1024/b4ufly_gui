@@ -1,5 +1,5 @@
 <div [ngClass]="(is_loading==true)?'blured-div':''">
-    <agm-map [latitude]="lat" [longitude]="lng" [(zoom)]="zoom" (mapReady)="getAirportsData()" (zoomChange)="printSomeStats($event)"
+    <agm-map [latitude]="lat" [longitude]="lng" [(zoom)]="zoom" [streetViewControl]="false" (mapClick)="pickPosition($event)"
             [styles]='[{"elementType":"geometry","stylers":[{"color":"#ebe3cd"}]},{"elementType":"labels","stylers":[{"visibility":"off"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#523735"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#f5f1e6"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#c9b2a6"}]},{"featureType":"administrative.land_parcel","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"geometry.stroke","stylers":[{"color":"#dcd2be"}]},{"featureType":"administrative.land_parcel","elementType":"labels.text.fill","stylers":[{"color":"#ae9e90"}]},{"featureType":"administrative.neighborhood","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#93817c"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#a5b076"}]},{"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"color":"#447530"}]},{"featureType":"road","elementType":"geometry","stylers":[{"color":"#f5f1e6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#fdfcf8"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#f8c967"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#e9bc62"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry","stylers":[{"color":"#e98d58"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry.stroke","stylers":[{"color":"#db8555"}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#806b63"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"transit.line","elementType":"labels.text.fill","stylers":[{"color":"#8f7d77"}]},{"featureType":"transit.line","elementType":"labels.text.stroke","stylers":[{"color":"#ebe3cd"}]},{"featureType":"transit.station","elementType":"geometry","stylers":[{"color":"#dfd2ae"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#b9d3c2"},{"weight":2}]},{"featureType":"water","elementType":"geometry.stroke","stylers":[{"color":"#507e60"},{"lightness":-5},{"visibility":"on"},{"weight":5.5}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#92998d"}]}]'>
 
         <agm-marker [latitude]="lat" [longitude]="lng" [iconUrl]="liftoff_time_icon"
@@ -15,18 +15,34 @@
           </div>
           </agm-info-window>
           <!-- 43mts zones -->
-          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'" [fillOpacity]="'0.1'"
-                    [fillOpacity]="'0.1'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="2" [strokeColor]="'orange'"
-                    [radius]="near_airports_warning_distance">
-          </agm-circle>
           <!-- restricted zones -->
           <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'red'"
-                    [fillOpacity]="'0.1'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="2" [strokeColor]="'red'"
+                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'red'"
                     [radius]="near_airports_denied_distance">
           </agm-circle>
+          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'" [fillOpacity]="'0.1'"
+                    [fillOpacity]="'0.1'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'orange'"
+                    [radius]="near_airports_warning_distance">
+          </agm-circle>
+
         </agm-marker>
     </agm-map>
 </div>
+
+<div class="top-menu-bar">
+  <h1>B4uFly | Beta </h1>
+  <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'">data</div>
+</div>
+
+
+<!-- DATA STATUS
+<div style="position: absolute;">
+  <ng-container *ngIf="airports_loaded==true then loaded else not_loaded"></ng-container>
+  <ng-template #loaded><p>Airports loaded </p></ng-template>
+  <ng-template #not_loaded><p>Airports not loaded </p></ng-template>
+</div>
+ END DATA STATUS -->
+
 
 <!-- LOADING  -->
 <div class="loading-layer" *ngIf="is_loading">
@@ -54,15 +70,15 @@
             <p class="info-card-header flight-status-1">A volar! <button (click)="i_was_informed()">x</button></p>
             <p>Asi mismo, existen algunas restrincciones que deberias tener en cuenta:</p>
             <ul>
-                <li>No esta permitido volar por sobre los 43mts de altura desde el nivel del terreno</li>
-                <li>Esta prohibido el vuelo sobre aglomeración de personas.</li>
-                <li>Debes estar a 30mts minimo de personas y propiedad privada.</li>
-                <li>Esta prohibido volar fuera del horario diurno.</li>
-                <li>Debes mantener contacto visual permanente con el VANT.</li>
-                <li>Zona de aproximación de:</li>
-                <ul>
-                  <li *ngFor="let air_conflicts of near_objects_denied">a'{{air_conflicts}}'</li>
-                </ul>
+              <li>No esta permitido volar por sobre los 43mts de altura desde el nivel del terreno</li>
+              <li>Esta prohibido el vuelo sobre aglomeración de personas.</li>
+              <li>Debes estar a 30mts minimo de personas y propiedad privada.</li>
+              <li>Esta prohibido volar fuera del horario diurno.</li>
+              <li>Debes mantener contacto visual permanente con el VANT.</li>
+            </ul>
+            <p>Se cuidadoso, estas en la zona de aproximación de:</p>
+              <ul>
+                <li *ngFor="let air_conflicts of near_objects_warning">{{air_conflicts}}</li>
               </ul>
           </div>
           <div *ngSwitchCase=2>
@@ -71,7 +87,7 @@
             <ul>
                 <li>Zona de operaciones de:</li>
                 <ul>
-                  <li *ngFor="let a of near_objects_denied">"{{ a }}"</li>
+                  <li *ngFor="let a of near_objects_denied">{{ a }}</li>
                 </ul>
                 <li>Papa noel son los padres.</li>
                 <li>Sos amigo de la federal.</li>

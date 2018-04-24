@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   public informed = false;
   public min_zoom = 18;
   public max_zoom = 8;
+  public airports_loaded = false;
+  public have_connection_errors = false;
 
   // Data Containers
   public near_objects_warning = [];
@@ -33,7 +35,7 @@ export class AppComponent implements OnInit {
   public liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
 
   ngOnInit() {
-    this.getAirportsData();
+   this.getAirportsData();
   }
 
   constructor (private _airports: DataAcquireService) {
@@ -42,7 +44,7 @@ export class AppComponent implements OnInit {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.zoom = 16;
-        this.getAirportsData();
+        this.uCanFlight();
         console.log('Latitude: ' + this.lat + ' and Longitude: ' + this.lng);
       });
     }
@@ -61,7 +63,22 @@ export class AppComponent implements OnInit {
         // console.log( 'WOC: ' + this.near_objects_warning.length + '.' );
       },
       err => console.log(err),
-      () => console.log('Nearest Objects (Warning) successful loaded!.')
+      () => {
+              if ( this.near_objects_denied.length === 0 && this.near_objects_warning.length === 0) {
+                    this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
+                    this.can_fly = 0;
+                    console.log('Great! time to liftof \\o/, u can fly!');
+              } else if ( this.near_objects_denied.length > 0 ) {
+                    this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-denied-green.png';
+                    this.can_fly = 2;
+                    console.log('Can\'t flight');
+              } else {
+                    this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-warning-green.png';
+                    this.can_fly = 1;
+                    console.log('You can flight, but few restrictions apply.');
+              }
+              console.log('Nearest Objects (Warning) successful loaded!.');
+            }
     );
   }
 
@@ -77,72 +94,65 @@ export class AppComponent implements OnInit {
        //  console.log( 'DOC: ' + this.near_objects_denied.length + '.' );
       },
       err => console.log(err),
-      () => console.log('Nearest Objects (Denied) successful loaded!.')
+      () => {
+              console.log('Nearest Objects (Denied) successful loaded!.');
+            }
     );
   }
+
+  loading_done() {
+    console.log('Executed loading done function.');
+    this.is_loading = !this.is_loading;
+  }
+
   i_was_informed() {
     this.informed = !this.informed;
   }
   getAirportsData() {
-    this.is_loading = true;
-    this.informed = false;
-    this.airports.length = 0;
-    this.getNearetObjectsWarning();
-    this._airports.getNearAirports(this.lat, this.lng, this.viewport_range).subscribe(
-    data => {
-      for (let a of data.results ) {
-        this.airports.push({
-          lat: a.the_geom.properties.gg_point_coordinates[0],
-          lng: a.the_geom.properties.gg_point_coordinates[1],
-          local: a.local_identifier,
-          name: a.human_readable_identifier,
-          warning: this.near_objects_denied.indexOf(a.local_identifier) < 0,
-          denied: this.near_objects_denied.indexOf(a.local_identifier) < 0
-        });
-      }
-      this.is_loading = false;
-      if (this.near_objects_warning.length === 0 &&  this.near_objects_denied.length === 0) {
-        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
-        this.can_fly = 0;
-        console.log('Great! time to liftof \\o/, u can fly!');
-      }
-      if ( this.near_objects_warning.length > 0 ) {
-        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-warning-green.png';
-        this.can_fly = 1;
-        console.log('Can fly, but have some restrictions');
-      }
-      if ( this.near_objects_denied.length > 0 ) {
-        this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-denied-green.png';
-        this.can_fly = 2;
-        console.log('Sorry, but you can\'t fly!');
-      }
-
-    },
-    err => console.log(err),
-    () => {
-            this.is_loading = false;
-            console.log('Airports Data Layer successful loaded.');
+    if ( !this.airports_loaded ) {
+      this.is_loading = true;
+      this.informed = false;
+      this.airports.length = 0;
+      this._airports.getAirportsList().subscribe(
+        data => {
+          for (let a of data.results ) {
+            this.airports.push({
+              lat: a.the_geom.properties.gg_point_coordinates[0],
+              lng: a.the_geom.properties.gg_point_coordinates[1],
+              local: a.local_identifier,
+              name: a.human_readable_identifier,
+              // warning: this.near_objects_denied.indexOf(a.local_identifier) < 0,
+              // denied: this.near_objects_denied.indexOf(a.local_identifier) < 0
+            });
           }
-    );
+          console.log(this.airports);
+        },
+        err => {
+                 this.have_connection_errors = true;
+                 console.log('Sorry, but we\'re having problems to connect with DPS');
+               },
+        () => {
+                this.airports_loaded = true;
+                console.log('Airports Data Layer successful loaded.');
+              }
+      );
+    }
+  }
+
+  uCanFlight () {
+    this.is_loading = true;
+    this.getNearetObjectsWarning();
+    this.is_loading = false;
   }
 
   printSomeStats(event) {
-    if ( event > this.min_zoom ) {
-      // this.zoom = this.min_zoom;
-      console.log('Too high');
-    }
-    if ( event < this.max_zoom ) {
-      console.log('Too low');
-      this.zoom = this.max_zoom;
-    }
-    this.viewport_range = Math.round(2000000 / event);
-    console.log('event ZOOM: ' + event + ' internal VIEWPORT RANGE: ' + this.viewport_range);
+    // Nothing
   }
 
   pickPosition(event) {
     this.lat = event.coords.lat;
     this.lng = event.coords.lng;
-    this.getAirportsData();
+    this.uCanFlight();
     console.log('Moved to lat: ' + this.lat + ', lng: ' + this.lng);
   }
 }
