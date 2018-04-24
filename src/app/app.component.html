@@ -32,6 +32,13 @@
 <div class="top-menu-bar">
   <h1>B4uFly | Beta </h1>
   <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'">data</div>
+  <div [ngClass]="(can_fly<2)?'centered-container btn data-ready':'centered-container btn data-working'">
+    <ng-container [ngSwitch]="can_fly">
+      <p *ngSwitchCase=0>VUELO LIBRE</p>
+      <p *ngSwitchCase=1>VUELO CON RESTRICCIONES</p>
+      <p *ngSwitchCase=2>ZONA RESTRINGIDA</p>
+    </ng-container>
+  </div>
 </div>
 
 <!-- LOADING  -->
@@ -42,7 +49,7 @@
 <!-- END LOADING  -->
 
 <!-- FLIGHT CAPABILITY -->
-<div class="info-layer" *ngIf="!informed && !is_loading">
+<div class="info-layer" *ngIf="!informed && !is_loading && airports_loaded">
     <div class="single-card-fc">
       <ng-container [ngSwitch]="can_fly">
           <div *ngSwitchCase=0>

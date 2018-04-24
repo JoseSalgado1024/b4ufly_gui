@@ -194,3 +194,16 @@ footer {
   float: right;
   margin: -40px 10px 0 0;
 }
+
+.centered-container {
+  position: fixed;
+  top: 0;
+  width: 20em;
+  left: 50%;
+  margin-left: -10em;
+  height: 4em;
+  border-radius: 0 0 5px 5px;
+  text-align: center;
+  font-size: 1em;
+  padding: 0;
+}
