@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { Component , TemplateRef } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { DataAcquireService } from './data-acquire.service';
-
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+
+
+export class AppComponent implements OnInit {
   // APP setting
   public title = 'app';
   public is_loading = true;
   public can_fly = 0;
-  public  informed = false;
+  public informed = false;
+  public min_zoom = 18;
+  public max_zoom = 8;
 
   // Data Containers
   public near_objects_warning = [];
@@ -25,8 +29,12 @@ export class AppComponent {
   public zoom = 10;
   public near_airports_warning_distance = 5000;
   public near_airports_denied_distance = 1000;
-  public viewport_range = 200000;
+  public viewport_range = Math.round(2000000 / this.zoom );
   public liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
+
+  ngOnInit() {
+    this.getAirportsData();
+  }
 
   constructor (private _airports: DataAcquireService) {
     if (navigator.geolocation) {
@@ -34,6 +42,7 @@ export class AppComponent {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.zoom = 16;
+        this.getAirportsData();
         console.log('Latitude: ' + this.lat + ' and Longitude: ' + this.lng);
       });
     }
@@ -49,7 +58,7 @@ export class AppComponent {
             this.near_objects_warning.push(wa.local_identifier);
           }
         }
-        console.log( 'WOC: ' + this.near_objects_warning.length + '.' );
+        // console.log( 'WOC: ' + this.near_objects_warning.length + '.' );
       },
       err => console.log(err),
       () => console.log('Nearest Objects (Warning) successful loaded!.')
@@ -65,7 +74,7 @@ export class AppComponent {
         for (let da of data.results ) {
             this.near_objects_denied.push(da.local_identifier);
         }
-        console.log( 'DOC: ' + this.near_objects_denied.length + '.' );
+       //  console.log( 'DOC: ' + this.near_objects_denied.length + '.' );
       },
       err => console.log(err),
       () => console.log('Nearest Objects (Denied) successful loaded!.')
@@ -95,7 +104,7 @@ export class AppComponent {
       if (this.near_objects_warning.length === 0 &&  this.near_objects_denied.length === 0) {
         this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-allow-green.png';
         this.can_fly = 0;
-        console.log('Can fly!');
+        console.log('Great! time to liftof \\o/, u can fly!');
       }
       if ( this.near_objects_warning.length > 0 ) {
         this.liftoff_time_icon = 'assets/default-theme/icons_dot-theme-warning-green.png';
@@ -115,6 +124,19 @@ export class AppComponent {
             console.log('Airports Data Layer successful loaded.');
           }
     );
+  }
+
+  printSomeStats(event) {
+    if ( event > this.min_zoom ) {
+      // this.zoom = this.min_zoom;
+      console.log('Too high');
+    }
+    if ( event < this.max_zoom ) {
+      console.log('Too low');
+      this.zoom = this.max_zoom;
+    }
+    this.viewport_range = Math.round(2000000 / event);
+    console.log('event ZOOM: ' + event + ' internal VIEWPORT RANGE: ' + this.viewport_range);
   }
 
   pickPosition(event) {

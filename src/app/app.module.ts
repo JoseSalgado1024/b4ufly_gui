@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { DataAcquireService } from './data-acquire.service';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule } from 'ngx-bootstrap';
 
 
 
