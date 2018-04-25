@@ -16,6 +16,8 @@ export class DataAcquireService {
   public api_home: string;
   public api_search: string;
   public api_near: string;
+  public weather_api: string;
+  public weather_api_ak: string;
 
   constructor(private http: HttpClient) {
     /* MAIN CONSTRUCTOR */
@@ -90,5 +92,4 @@ export class DataAcquireService {
     return this.http.get(endpoint);
 
   }
-
 }

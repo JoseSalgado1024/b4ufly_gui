@@ -20,8 +20,8 @@
                     [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="1" [strokeColor]="'red'"
                     [radius]="near_airports_denied_distance">
           </agm-circle>
-          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'" 
-                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'orange'"
+          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'"
+                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="1" [strokeColor]="'orange'"
                     [radius]="near_airports_warning_distance">
           </agm-circle>
 
@@ -47,6 +47,7 @@
     <li class="inline-list-item">w: {{ near_objects_warning?.length || '0' }}</li>
     <li class="inline-list-item">f: {{ near_objects_denied?.length || '0'}}</li>
     <li class="inline-list-item">({{ lat | number : '1.4' }}, {{ lng | number : '1.4' }}) </li>
+    <li class="inline-list-item"><button (click)="getWeatherLayer()">get weather</button></li>
   </ul>
 </div>
 

@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { DataAcquireService } from './data-acquire.service';
+import { WeatherAcquireService } from './weather-acquire.service';
 import { ModalModule } from 'ngx-bootstrap';
 
 
@@ -22,7 +23,10 @@ import { ModalModule } from 'ngx-bootstrap';
       apiKey: 'AIzaSyDbhCrdAzmNDaXgabM4-KoVQQUmD9zSX64'
     })
   ],
-  providers: [DataAcquireService],
+  providers: [
+    DataAcquireService,
+    WeatherAcquireService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
