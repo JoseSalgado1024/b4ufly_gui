@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
         this.near_objects_warning.length = 0;
         for (let wa of data.results ) {
           if (this.near_objects_denied.indexOf(wa.local_identifier) < 0) {
-            this.near_objects_warning.push(wa.local_identifier);
+            this.near_objects_warning.push(wa.human_readable_identifier);
           }
         }
         // console.log( 'WOC: ' + this.near_objects_warning.length + '.' );
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
           this.near_objects_denied.length = 0;
         }
         for (let da of data.results ) {
-            this.near_objects_denied.push(da.local_identifier);
+            this.near_objects_denied.push(da.human_readable_identifier);
         }
        //  console.log( 'DOC: ' + this.near_objects_denied.length + '.' );
       },

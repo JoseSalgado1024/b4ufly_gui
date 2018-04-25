@@ -17,11 +17,11 @@
           <!-- 43mts zones -->
           <!-- restricted zones -->
           <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'red'"
-                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'red'"
+                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="1" [strokeColor]="'red'"
                     [radius]="near_airports_denied_distance">
           </agm-circle>
-          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'" [fillOpacity]="'0.1'"
-                    [fillOpacity]="'0.1'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'orange'"
+          <agm-circle [latitude]="airport.lat" [longitude]="airport.lng" [fillColor]="'orange'" 
+                    [fillOpacity]="'0.2'" [strokeOpacity]="1" [strokePosition]="0" [strokeWeight]="0" [strokeColor]="'orange'"
                     [radius]="near_airports_warning_distance">
           </agm-circle>
 
@@ -34,7 +34,7 @@
   <div [ngClass]="(airports_loaded==true)?'floating-right btn data-ready':'floating-right btn data-working'" title="Data status">data</div>
   <ng-container [ngSwitch]="can_fly">
     <div *ngSwitchCase=0 class="centered-container flight-status-0">
-        <p >VUELO LIBRE</p>
+        <p >LIBRE PARA VUELO RECREATIVO</p>
     </div>
     <div *ngSwitchCase=1 class="centered-container flight-status-1">
         <p >VUELO CON RESTRICCIONES</p>
@@ -43,6 +43,11 @@
         <p >ZONA RESTRINGIDA</p>
     </div>
   </ng-container>
+  <ul class="inline-list">
+    <li class="inline-list-item">w: {{ near_objects_warning?.length || '0' }}</li>
+    <li class="inline-list-item">f: {{ near_objects_denied?.length || '0'}}</li>
+    <li class="inline-list-item">({{ lat | number : '1.4' }}, {{ lng | number : '1.4' }}) </li>
+  </ul>
 </div>
 
 <!-- LOADING  -->
@@ -57,7 +62,7 @@
     <div class="single-card-fc">
       <ng-container [ngSwitch]="can_fly">
           <div *ngSwitchCase=0>
-            <p class="info-card-header flight-status-0">A volar! <button (click)="i_was_informed()">x</button></p>
+            <p class="info-card-header">RECREATIVO<button (click)="i_was_informed()">x</button></p>
             <p>Siempre tene en cuenta que:</p>
               <ul>
                 <li>No esta permitido volar por sobre los 120mts de altura desde el nivel del terreno</li>
@@ -68,7 +73,7 @@
               </ul>
           </div>
           <div *ngSwitchCase=1>
-            <p class="info-card-header flight-status-1">A volar! <button (click)="i_was_informed()">x</button></p>
+            <p class="info-card-header">RESTRICCIONES<button (click)="i_was_informed()">x</button></p>
             <p>Asi mismo, existen algunas restrincciones que deberias tener en cuenta:</p>
             <ul>
               <li>No esta permitido volar por sobre los 43mts de altura desde el nivel del terreno</li>
@@ -83,7 +88,7 @@
               </ul>
           </div>
           <div *ngSwitchCase=2>
-            <p class="info-card-header flight-status-2">Zona Prohibida<button (click)="i_was_informed()">x</button></p>
+            <p class="info-card-header">Prohibido<button (click)="i_was_informed()">x</button></p>
             <p>Esto se debe a:</p>
             <ul>
                 <li>Zona de operaciones de:</li>
