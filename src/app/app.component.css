@@ -80,7 +80,7 @@ footer {
   position: fixed;
   background: #0000009e;
   width: 20em;
-  top: 5.7em;
+  top: 4.9em;
   left: .7em;
   margin: -33px -10px;
   min-height: 10em;
@@ -172,10 +172,9 @@ footer {
 
 .top-menu-bar h1 {
   color: #FFF;
-  padding: 0;
   margin: 0;
   text-transform: uppercase;
-  padding: .3em .2em;
+  padding: .1em .2em;
 }
 
 .btn {
@@ -197,7 +196,7 @@ footer {
 
 .floating-right {
   float: right;
-  margin: -40px 10px 0 0;
+  margin: -33px 10px 0 0;
 }
 
 .centered-container {
@@ -206,11 +205,11 @@ footer {
   width: 20em;
   left: 50%;
   margin-left: -10em !important;
-  height: 1.25em;
+  height: 1.7em;
   border-radius: 0 0 5px 5px;
   text-align: center;
   font-size: 1em !important;
-  padding: 30px 0px !important;
+  padding: 21px 0px !important;
 }
 
 .inline-list {
@@ -219,8 +218,8 @@ footer {
   display: -ms-inline-flexbox;
   display: inline-flex;
   position: fixed;
-  top: 4px;
-  left: 60%;
+  top: -2px;
+  left: 59%;
 }
 
 .inline-list-item {
@@ -231,4 +230,23 @@ footer {
   font-size: .8em;
   color: #FFFFFFdd;
   font-family: "Robot", sans-serif;
+}
+
+.scroll-left {
+  overflow-x: auto;
+  max-height: 20em;
+  width: 18.5em;
+}
+
+.scroll-left::-webkit-scrollbar {
+  width: 1em;
+}
+
+.scroll-left::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.scroll-left::-webkit-scrollbar-thumb {
+background-color: darkgrey;
+outline: 1px solid slategrey;
 }

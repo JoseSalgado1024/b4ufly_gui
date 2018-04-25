@@ -83,7 +83,7 @@
               <li>Debes mantener contacto visual permanente con el VANT.</li>
             </ul>
             <p>Se cuidadoso, estas en la zona de aproximación de:</p>
-              <ul>
+              <ul  class="scroll-left">
                 <li *ngFor="let air_conflicts of near_objects_warning">{{air_conflicts}}</li>
               </ul>
           </div>
@@ -92,11 +92,9 @@
             <p>Esto se debe a:</p>
             <ul>
                 <li>Zona de operaciones de:</li>
-                <ul>
+                <ul class="scroll-left">
                   <li *ngFor="let a of near_objects_denied">{{ a }}</li>
                 </ul>
-                <li>Papa noel son los padres.</li>
-                <li>Sos amigo de la federal.</li>
               </ul>
           </div>
       </ng-container>
