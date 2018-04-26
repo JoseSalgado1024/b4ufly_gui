@@ -42,7 +42,7 @@ export class DataAcquireService {
       + Object: see documentation: http://datos.anac.gob.ar/madhel/api/docs/#!/madhel/api_v2_airports_read
     */
     const endpoint = this.api_search + '/' + local_identifier;
-    console.log(endpoint);
+    // console.log(endpoint);
     return this.http.get(endpoint);
   }
 
@@ -58,7 +58,7 @@ export class DataAcquireService {
     ======
       + Object: see documentation: http://datos.anac.gob.ar/madhel/api/docs/#!/madhel/api_v2_airports_list
     */
-    console.log('GET:' + this.api_search + '.');
+    // console.log('GET:' + this.api_search + '.');
     return this.http.get(this.api_search);
   }
 
@@ -88,7 +88,7 @@ export class DataAcquireService {
       + Object: see documentation: http://datos.anac.gob.ar/madhel/api/docs/#!/madhel/api_v2_airports_near_read
     */
     const endpoint = this.api_near + '/' + lat + '/'  + lng  + '/' + radius;
-    console.log('GET:' + endpoint + '.');
+    // console.log('GET:' + endpoint + '.');
     return this.http.get(endpoint);
 
   }
