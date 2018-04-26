@@ -49,6 +49,8 @@ export class AppComponent implements OnInit {
     */
     this.uCanFlight();
     this.getAirportsData();
+    // this.getWeatherLayer();
+    setTimeout( () => { this.getWeatherLayer(); }, 5000);
   }
 
   constructor (private _airports: DataAcquireService,
@@ -137,7 +139,7 @@ export class AppComponent implements OnInit {
               name: a.human_readable_identifier,
             });
           }
-          console.log(this.airports);
+          // console.log(this.airports);
         },
         err => {
                  this.have_connection_errors = true;
@@ -169,10 +171,20 @@ export class AppComponent implements OnInit {
   }
   getWeatherLayer() {
     this._weather.getCurrentWeather(this.lat, this.lng).subscribe(
-      data => { console.log(data); },
+      data => {
+                this.current_weather.wind = Math.round(data.wind.deg);
+                console.log('Wind: ' + data.wind.deg );
+              },
       err => { console.log(err); },
-      () => { console.log('Current Weather successful loaded.'); }
+      () => { console.log( 'Current Weather successful loaded.' ); }
     );
+  }
+
+  rotateWind () {
+    let styles = {
+        'transform': 'rotate(' + this.current_weather.wind + 'deg)'
+    }
+    return styles;
   }
 }
 

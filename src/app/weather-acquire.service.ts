@@ -14,6 +14,7 @@ const httpOptions = {
 export class WeatherAcquireService {
   public weather_api: string;
   public weather_api_ak: string;
+  
 
   constructor(private http: HttpClient) {
     this.weather_api = 'https://api.openweathermap.org/data/2.5/weather';
@@ -25,4 +26,5 @@ export class WeatherAcquireService {
     console.log('GET: ' + endpoint + '.');
     return this.http.get(endpoint);
   }
+
 }
