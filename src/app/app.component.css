@@ -297,11 +297,7 @@ outline: 1px solid slategrey;
 .box-9x9 {
   height: 9em;
   width: 9em;
-  /* 
-  background: #000;
-  color: #FFF;
-  */
-}
+  transform: scale(.5);}
 
 .box-20x6 {
   height: 6em;
