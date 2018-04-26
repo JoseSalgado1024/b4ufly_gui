@@ -2,6 +2,7 @@ import { Component , TemplateRef } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { DataAcquireService } from './data-acquire.service';
 import { WeatherAcquireService } from './weather-acquire.service';
+import { GgGeocoderService } from './gg-geocoder.service';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,10 @@ export class AppComponent implements OnInit {
     humidity: 0,
     visibility: 0
   };
+  public geo_ref = {
+    result: [],
+    status: ""
+  }
 
   // Data Filters & Defaults
   public lat = -37.259949;
@@ -61,9 +66,8 @@ export class AppComponent implements OnInit {
     setTimeout( () => { this.getWeatherLayer(); }, 3000); }
 
   constructor (private _airports: DataAcquireService,
-               private _weather: WeatherAcquireService) {
-
-  }
+               private _weather: WeatherAcquireService,
+               private _geocoder: GgGeocoderService) { }
 
   private setInitialPilotPosition() {
     if (navigator.geolocation) {
@@ -80,6 +84,15 @@ export class AppComponent implements OnInit {
   searchForPlaces(event) {
     const s: string = event
     if (s.length > 2) {
+      this._geocoder.getLatLngFromGG(s).subscribe(
+        data => { 
+                  this.geo_ref.status = data.status;
+                  this.geo_ref.result = data.results
+                  console.log(this.geo_ref.result);
+                },
+        err => console.log(err),
+        () => console.log('GEO Successful loaded.')
+      );
       console.log(event);
     }
   }
@@ -250,10 +263,8 @@ export class AppComponent implements OnInit {
                 // console.log(data);
               },
       err => { console.log(err); },
-      () => {
-              this.parseWindtoHuman();
-              console.log( 'Current Weather successful loaded.' );
-            }
+      () => { this.parseWindtoHuman();
+              console.log( 'Current Weather successful loaded.' );}
     );
   }
 

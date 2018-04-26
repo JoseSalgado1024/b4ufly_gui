@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { DataAcquireService } from './data-acquire.service';
 import { WeatherAcquireService } from './weather-acquire.service';
+import { GgGeocoderService } from './gg-geocoder.service';
 import { ModalModule } from 'ngx-bootstrap';
 
 
@@ -25,7 +26,8 @@ import { ModalModule } from 'ngx-bootstrap';
   ],
   providers: [
     DataAcquireService,
-    WeatherAcquireService
+    WeatherAcquireService,
+    GgGeocoderService
   ],
   bootstrap: [AppComponent]
 })

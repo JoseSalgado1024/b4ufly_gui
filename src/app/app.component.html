@@ -96,7 +96,11 @@
 
 </div>
 <!-- END FC  -->
-
+<div class="georef-results">
+  <ul>
+    <li *ngFor="let l of geo_ref.result">{{ l.formatted_address }}</li>
+  </ul>
+</div>
 <!-- FOOTER BAR -->
 <div class="footer-container">
   <div class="stick-in-the-bottom">
@@ -129,8 +133,10 @@
                 <div class="block-object">
                   <div class="top-spacer-4"></div>
                   <div class="box-20x5">
-                    <input type="text" placeholder="Ingrese un destino" (input)="searchForPlaces($event.target.value)"/>
-                    <button (click)="goToDestination()">ir</button>
+                    <div class="search-location-container">
+                      <input type="text" placeholder="Ingrese un destino" (input)="searchForPlaces($event.target.value)"/>
+                      <button (click)="goToDestination()">ir</button>
+                    </div>
 
                   </div>
                 </div>

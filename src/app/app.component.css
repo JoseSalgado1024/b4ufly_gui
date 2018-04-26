@@ -365,3 +365,39 @@ outline: 1px solid slategrey;
 .box-20x5-content img {
   padding: 5px 5px 0px 20px;
 }
+
+
+.search-location-container {
+  background: #DAE;
+  height: 5em;
+  padding: 10px;
+}
+
+.search-location-container input[type="text"] {
+  padding: 5px 10px;
+  width: 18em;
+  border: none;
+  border-radius: 3px;
+  background: #FFF;
+}
+
+.search-location-container button {
+  background: #5f9;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.georef-results {
+  position: fixed;
+  left: 50%;
+  width: 25em;
+  max-height: 5em;
+  font-size: .8em;
+  background: #0000008a;
+  margin-left: -12.3em;
+  bottom: 6.3em;
+  overflow: hidden;
+  color: #FFF;
+  font-family: "Roboto", sans-serif;
+}
